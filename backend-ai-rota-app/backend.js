@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8001;
 
 const app = express();
 
@@ -14,5 +14,5 @@ app.get('/generate-new-rota', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log('backend is up and running at port ' + port);
+    console.log('backend is up and running at port ' + port + `\n ${process.env.API_KEY}`);
 });
