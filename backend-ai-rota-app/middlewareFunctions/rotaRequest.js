@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router()
-
 const {Configuration, OpenAIApi} = require('openai');
 const configuration = new Configuration({
     //organization : process.env.OPENAI_ORG_ID,
@@ -20,9 +17,9 @@ const testParams = {
                 conten: "say: hello-world"}]
 };
 
-
-router.get('', (req, res, next) => {
-    let rota = await openai.createChatCompletion(testParams);
+exports.newRotaFromOpenAI = (req, res) => {
+    let rota = (async () => {await openai.createChatCompletion(testParams)})();
     console.log(rota);
     res.send(rota);    
-} );
+};
+
