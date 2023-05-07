@@ -21,7 +21,7 @@ app.get('/ping-server', (req, res) => {
 
 app.use('/generate-new-rota', rotaRequest);
 
-app.use('/', express.static('../ai-rota-app/test-dist'));
+app.use('/', express.static('../ai-rota-app/dist'));
 
 app.listen(port, () => {
     console.log('backend is up and running and frontend served at http://localhost:' + port );
