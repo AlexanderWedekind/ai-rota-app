@@ -4,8 +4,9 @@ const port = process.env.PORT || 8001;
 
 const express = require('express');
 const app = express();
+app.use(express.json());
 
-const rotaRequest = require('./routes/rotaRequestRoutes.js');
+const rotaRequestRoutes = require('./routes/rotaRequestRoutes.js');
 
 
 
@@ -19,7 +20,7 @@ app.get('/ping-server', (req, res) => {
     res.send(JSON.stringify(reply));
 })
 
-app.use('/generate-new-rota', rotaRequest);
+app.use('/generate-new-rota', rotaRequestRoutes);
 
 app.use('/', express.static('../ai-rota-app/dist'));
 

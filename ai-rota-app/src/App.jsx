@@ -16,12 +16,14 @@ import Button from './components/Button.jsx'
 function App() {
   const [newRota, setNewRota] = useState(0);
 
-  const pingServer = 'http://localhost:8000/ping-server';
+  const pingServer = '/ping-server';
 
-  async function requestNewRota() {
+  const tryOpenAi = '/generate-new-rota';
+
+  async function requestNewRota(route) {
     console.log("I'm pinging the server...");
     try{
-      const responseFromServer = await superagent.get(pingServer);
+      const responseFromServer = await superagent.get('http://localhost:8000' + route);
       console.log(responseFromServer);
     }catch(error) {
       console.log(error.message);
@@ -35,7 +37,7 @@ function App() {
   return (  
     <div className='App-container'>
       <p>App component</p>
-     <Button onClick={requestNewRota()}/>
+     <Button onClick={requestNewRota(tryOpenAi)}/>
 
     </div>
   )
