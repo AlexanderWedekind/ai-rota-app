@@ -22,11 +22,11 @@ const testParams = {
 
 exports.newRotaFromOpenAI = async (req, res) => {
     try {
-        const rotaSuggestion = await openai.createChatCompletion(testParams);
-        //const rotaReply = await rotaSuggestion.json();
-        //console.log(rotaSuggestion);
-        console.log(rotaSuggestion.data.choices[0].message);
-        res.send(circularJSON.stringify(rotaSuggestion)); 
+        const rotaSuggestion = await openai.createChatCompletion(testParams);        
+        const message = await circularJSON.stringify(rotaSuggestion.data.choices[0].message);
+        //console.log(rotaSuggestion.data.choices[0].message);
+        console.log(message);
+        res.send(message); 
     }catch(error) {
         console.log(error)
     }

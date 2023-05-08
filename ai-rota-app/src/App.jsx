@@ -1,20 +1,25 @@
-// import dotenv from 'dotenv';
-// dotenv.config();
-import { React, useState } from 'react';
+
+import  React, { useState } from 'react';
 import superagent from 'superagent';
 
 import './App.css'
-import Button from './components/Button.jsx'
 
-// const serverUrl = process.env.SERVER_URL + process.env.PORT;
-// console.log(serverUrl);
-// const pingServer = serverUrl + '/ping-server';
-// console.log(pingServer);
+import DisplayResponseMessage from './components/DisplayResponseMessage';
+
+
+
+
 
 
 
 function App() {
-  const [newRota, setNewRota] = useState(0);
+
+  const [newRota, setNewRota] = useState('');
+
+  const updateRota = (newOne) => {
+    console.log('newOne: ' + newOne);
+    setNewRota(newOne);
+  };
 
   const pingServer = '/ping-server';
 
@@ -23,21 +28,23 @@ function App() {
   async function requestNewRota(route) {
     console.log("I'm pinging the server...");
     try{
-      const responseFromServer = await superagent.get('http://localhost:8000' + route);
-      console.log(responseFromServer);
+      const serverResponse = await superagent.get('http://localhost:8000' + route);
+      const responseJson = serverResponse.text;
+      const responseObject = await JSON.parse(responseJson);
+      console.log(responseObject.content);
+      updateRota(responseObject.content);
+      //console,log('newRota: ' + newRota);
     }catch(error) {
       console.log(error.message);
     }
   };
 
-  function iGotClicked() {
-    console.log('I got clicked');
-  }
-
+  
   return (  
     <div className='App-container'>
       <p>App component</p>
-     <Button onClick={requestNewRota(tryOpenAi)}/>
+      <DisplayResponseMessage newRota={newRota}/>
+      <button onClick={() => requestNewRota(tryOpenAi)}>Get a new rota</button>
 
     </div>
   )
