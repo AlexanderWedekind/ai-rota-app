@@ -1,6 +1,9 @@
 # ai-rota-app
 
+
+
 ## To build this on local machine:
+
 (this should come without a .env, so you'll need your own OpenAI API-key)
 
 1. open terminal in root directory
@@ -13,3 +16,5 @@
 
 It should say:
 backend is up and running and frontend served at http://localhost:8000
+
+
