@@ -22,7 +22,7 @@ app.get('/ping-server', (req, res) => {
     res.send(JSON.stringify(reply));
 })
 
-app.use('/all-users', pbRoutes);
+app.use('/pb', pbRoutes);
 
 app.use('/generate-new-rota', rotaRequestRoutes);
 
