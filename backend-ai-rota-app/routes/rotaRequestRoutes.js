@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router()
-const rotaRequest = require('../middlewareFunctions/rotaRequest.js');
+import newRotaFromOpenAI from '../middlewareFunctions/rotaRequest.js';
 
 
 
 
-router.get('', rotaRequest.newRotaFromOpenAI);
+router.get('', newRotaFromOpenAI);
 
-module.exports = router;
+export default router;

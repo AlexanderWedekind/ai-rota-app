@@ -5,6 +5,7 @@ import superagent from 'superagent';
 import './App.css'
 
 import DisplayResponseMessage from './components/DisplayResponseMessage';
+import AllUsers from './components/AllUsers.jsx';
 
 
 
@@ -45,6 +46,7 @@ function App() {
       <p>App component</p>
       <DisplayResponseMessage newRota={newRota}/>
       <button onClick={() => requestNewRota(tryOpenAi)}>Get a new rota</button>
+      <AllUsers/>
 
     </div>
   )

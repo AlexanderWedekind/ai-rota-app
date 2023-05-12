@@ -1,9 +1,11 @@
-const circularJSON = require('circular-json');
+import circularJSON from 'circular-json';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const {Configuration, OpenAIApi} = require('openai');
+import {Configuration, OpenAIApi}  from 'openai';
 const configuration = new Configuration({
     //organization : process.env.OPENAI_ORG_ID,
-    apiKey : process.env.OPENAI_API_KEY,
+    apiKey : process.env.OPENAI_API_KEY,  //"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"//
 });
 const openai = new OpenAIApi(configuration);
 
@@ -20,7 +22,7 @@ const testParams = {
                 content: "Hi, how are you?"}]
 };
 
-exports.newRotaFromOpenAI = async (req, res) => {
+const newRotaFromOpenAI = async (req, res) => {
     try {
         const rotaSuggestion = await openai.createChatCompletion(testParams);        
         const message = await circularJSON.stringify(rotaSuggestion.data.choices[0].message);
@@ -32,3 +34,4 @@ exports.newRotaFromOpenAI = async (req, res) => {
     }
 };
 
+export default newRotaFromOpenAI;

@@ -33,6 +33,16 @@
   padding: 15px;
 }
 
+.display-all-users-container {
+  background-color: #E5F9DB;
+  margin: 15px;
+  border-width: 10px;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #A2A378;  
+  padding: 15px;
+}
+
 .Button-container {
   background-color: #E5F9DB;
   margin: 15px;

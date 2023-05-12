@@ -1,12 +1,14 @@
-require('dotenv').config();
-const path = require('path');
+import dotenv from 'dotenv';
+dotenv.config();
+import path from 'path';
 const port = process.env.PORT || 8001;
 
-const express = require('express');
+import express, { json } from 'express';
 const app = express();
-app.use(express.json());
+app.use(json());
 
-const rotaRequestRoutes = require('./routes/rotaRequestRoutes.js');
+import rotaRequestRoutes from './routes/rotaRequestRoutes.js';
+import pbRoutes from './routes/pbRoutes.js';
 
 
 
@@ -19,6 +21,8 @@ app.get('/ping-server', (req, res) => {
     const reply = "thanks, I'll ping you back";
     res.send(JSON.stringify(reply));
 })
+
+app.use('/all-users', pbRoutes);
 
 app.use('/generate-new-rota', rotaRequestRoutes);
 
