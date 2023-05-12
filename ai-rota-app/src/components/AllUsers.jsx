@@ -3,35 +3,40 @@ import superagent from "superagent";
 
 function AllUsers() {
 
-        const allUsersRoute = '/pb/all-users'
+    const [thisContent, setThisContent] = useState('');
 
-        // const allUsers = async () => {
-        //     try{
-        //         await superagent('http://localhost:8000' + allUsersRoute);
-        //     }catch(error) {
-        //         console.log(error);
-        //     }
-        // };
+    const allUsersRoute = '/pb/all-users'
 
-        const [thisContent, setThisContent] = useState('');
+    async function allUsers(route) {
+        console.log("getting users from pb");
+        try{
+          const serverResponse = await superagent.get('http://localhost:8000' + route);
+          const responseJson = serverResponse.text;
+          const responseObject = await JSON.parse(responseJson);
+          //console.log(responseObject.content);
+          //updateRota(responseObject.content);
+          console.log(responseObject);
+          return responseObject;
+        }catch(error) {
+          console.log(error.message);
+        }
+      };
+    // const testfunction = async () => {
+    //     let count = 10000000;
+    //     while(count > 0) {
+    //         count = count - 1;
+    //     }
+    //     console.log('function was called');
+    //     return('function was called');
+                    
+    // };
 
-        
-        const testfunction = async () => {
-            let count = 10000000;
-            while(count > 0) {
-                count = count - 1;
-            }
-            console.log('function was called');
-            return('function was called');
-                       
-        };
-
-        useEffect(() => {  
-            async function doThis() {        
-                const thisConst =  await testfunction();
-                setThisContent(thisConst);
-            }
-            doThis();      
+    useEffect(() => {  
+        async function doThis() {        
+            const thisConst =  await allUsers(allUsersRoute);
+            setThisContent(thisConst);
+        }
+        doThis();      
     }, []);
 
 
