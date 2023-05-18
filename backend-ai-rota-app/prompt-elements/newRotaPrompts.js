@@ -1,20 +1,150 @@
-import circularJSON from 'circular-json';
-import dotenv from 'dotenv';
-dotenv.config();
+const emptyRota = [
+    {
+      "name": "alex",
+      "contractedHours": 30,
+      "monday": 0,
+      "tuesday": 0,
+      "wednesday": 0,
+      "thursday": 0,
+      "friday": 0,
+      "saturday": 0,
+      "sunday": 0
+    },
+    {
+      "name": "bob",
+      "contractedHours": 10,
+      "monday": 0,
+      "tuesday": 0,
+      "wednesday": 0,
+      "thursday": 0,
+      "friday": 0,
+      "saturday": 0,
+      "sunday": 0
+    },
+    {
+      "name": "lisa",
+      "contractedHours": 10,
+      "monday": 0,
+      "tuesday": 0,
+      "wednesday": 0,
+      "thursday": 0,
+      "friday": 0,
+      "saturday": 0,
+      "sunday": 0
+    },
+    {
+      "name": "henry",
+      "contractedHours": 35,
+      "monday": 0,
+      "tuesday": 0,
+      "wednesday": 0,
+      "thursday": 0,
+      "friday": 0,
+      "saturday": 0,
+      "sunday": 0
+    },
+    {
+      "name": "arthur",
+      "contractedHours": 10,
+      "monday": 0,
+      "tuesday": 0,
+      "wednesday": 0,
+      "thursday": 0,
+      "friday": 0,
+      "saturday": 0,
+      "sunday": 0
+    },
+    {
+      "name": "jeremiah",
+      "contractedHours": 35,
+      "monday": 0,
+      "tuesday": 0,
+      "wednesday": 0,
+      "thursday": 0,
+      "friday": 0,
+      "saturday": 0,
+      "sunday": 0
+    },
+    {
+      "name": "hiacynth",
+      "contractedHours": 35,
+      "monday": 0,
+      "tuesday": 0,
+      "wednesday": 0,
+      "thursday": 0,
+      "friday": 0,
+      "saturday": 0,
+      "sunday": 0
+    },
+    {
+      "name": "brenda",
+      "contractedHours": 10,
+      "monday": 0,
+      "tuesday": 0,
+      "wednesday": 0,
+      "thursday": 0,
+      "friday": 0,
+      "saturday": 0,
+      "sunday": 0
+    }
+  ];
 
-import {Configuration, OpenAIApi}  from 'openai';
-const configuration = new Configuration({
-    //organization : process.env.OPENAI_ORG_ID,
-    apiKey : process.env.OPENAI_API_KEY,  
-});
-const openai = new OpenAIApi(configuration);
+const shifts = [
+    {
+      "shift": "hall 1 am",
+      "hours": 8
+    },
+    {
+      "shift": "hall 1 pm",
+      "hours": 8
+    },
+    {
+      "shift": "hall 2",
+      "hours": 2
+    },
+    {
+      "shift": "hall 3",
+      "hours": 2
+    }
+  ]
+
+const setTheScene1 = "I will send you an empty rota in JSON format.\nThen I will send you an array of shifts in JSON format.\nThen I will let you know how to fill in the rota";
+
+const helpfullReply1 = "Sure! Please go ahead and provide the empty rota in JSON format and the array of shifts in JSON format. Once I have both, you can let me know how you would like to fill in the rota, and I'll assist you accordingly.";
+
+const settheScene2 = "here follows the empty rota: " + JSON.stringify(emptyRota);
+
+const helpfullRply2 = "Thank you for providing the empty rota. Now, please provide the array of shifts in JSON format, and let me know how you would like to fill in the rota using those shifts.";
+
+const setTheScene3 = "Here follows the array of shifts in JSON format: " + JSON.stringify(shifts);
+
+const helpfullReply3 = "Thank you for providing the array of shifts. Now, please let me know how you would like to fill in the rota using those shifts.";
+
+const setTheScene4 = "";
 
 
-// const generatedRota = await openai.createCompletion({
-//     model: "gpt-3.5-turbo",
-//     messages: [{role: "user",    
-//                 conten: "say: hello-world"}]
-// });
+const columns = `name, contracted, mon-hall1-am, mon-hall1-pm, mon-hall2, mon-hall3,
+tue-hall1-am, tue-hall1-pm, tue-hall2, tue-hall3,
+wed-hall1-am, wed-hall1-pm, wed-hall2, wed-hall3,
+thu-hall1-am, thu-hall1-pm, thu-hall2, thu-hall3,
+fri-hall1-am, fri-hall1-pm, fri-hall2, fri-hall3,
+sat-hall1-am, sat-hall1-pm, sat-hall2, sat-hall3,
+sun-hall1-am, sun-hall1-pm, sun-hall2, sun-hall3,  `;
+
+
+const enmptyRotaCsv = 
+`
+"name","contracted","mon-hall1-am","mon-hall1-pm","mon-hall2","mon-hall3","tue-hall1-am","tue-hall1-pm","tue-hall2","tue-hall3","wed-hall1-am","wed-hall1-pm","wed-hall2","wed-hall3","thu-hall1-am","thu-hall1-pm","thu-hall2","thu-hall3","fri-hall1-am","fri-hall1-pm","fri-hall2","fri-hall3","sat-hall1-am","sat-hall1-pm","sat-hall2","sat-hall3","sun-hall1-am","sun-hall1-pm","sun-hall2","sun-hall3"
+"alex",30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"bob",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"lisa",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"henry",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"arthur",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"jeremiah",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"hiacynth",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"brenda",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+`;
 
 const instructions =
 `
@@ -95,30 +225,3 @@ each 'employee' row can have a non-zero value in only one of the fields under al
 
 
 `;
-
-const rotaPrompt = {
-    model: "gpt-3.5-turbo",
-    messages: [{role: "user",    
-                content: instructions}]
-};
-
-const testParams = {
-    model: "gpt-3.5-turbo",
-    messages: [{role: "user",    
-                content: "Hi, how are you?"}]
-};
-
-const newRotaFromOpenAI = async (req, res) => {
-    try {
-        console.log(rotaPrompt);
-        const rotaSuggestion = await openai.createChatCompletion(rotaPrompt);        
-        const message = await circularJSON.stringify(rotaSuggestion.data.choices[0].message);
-        //console.log(rotaSuggestion.data.choices[0].message);
-        console.log(message);
-        res.send(message); 
-    }catch(error) {
-        console.log(error)
-    }
-};
-
-export default newRotaFromOpenAI;

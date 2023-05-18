@@ -11,12 +11,12 @@ function AllUsers() {
         console.log("getting users from pb");
         try{
           const serverResponse = await superagent.get('http://localhost:8000' + route);
-          const responseJson = serverResponse.text;
-          const responseObject = await JSON.parse(responseJson);
-          //console.log(responseObject.content);
-          //updateRota(responseObject.content);
-          console.log(responseObject);
-          return responseObject;
+          console.log(serverResponse);
+          //const responseJson = serverResponse.text;
+          //const responseObject = await JSON.parse(responseJson);
+
+          // console.log(responseObject);
+          // return responseObject;
         }catch(error) {
           console.log(error.message);
         }
