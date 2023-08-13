@@ -1,7 +1,7 @@
 import circularJSON from 'circular-json';
 import dotenv from 'dotenv';
 dotenv.config();
-
+import convert from './csvjson.js';
 import {Configuration, OpenAIApi}  from 'openai';
 const configuration = new Configuration({
     //organization : process.env.OPENAI_ORG_ID,
@@ -21,14 +21,14 @@ const instructions =
 here is a csv string:
 
 "name","contracted","mon-hall1-am","mon-hall1-pm","mon-hall2","mon-hall3","tue-hall1-am","tue-hall1-pm","tue-hall2","tue-hall3","wed-hall1-am","wed-hall1-pm","wed-hall2","wed-hall3","thu-hall1-am","thu-hall1-pm","thu-hall2","thu-hall3","fri-hall1-am","fri-hall1-pm","fri-hall2","fri-hall3","sat-hall1-am","sat-hall1-pm","sat-hall2","sat-hall3","sun-hall1-am","sun-hall1-pm","sun-hall2","sun-hall3"
-"alex",30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"bob",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"lisa",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"henry",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"arthur",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"jeremiah",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"hiacynth",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-"brenda",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"alex1",30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"alex2",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"alex3",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"alex4",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"alex5",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"alex6",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"alex7",35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+"alex8",10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 the csv string represents a shift rota in a place of work.
 you will provide assistance in filling it out, according to instruction which I shall provide.
@@ -93,7 +93,8 @@ each 'employee' row can have a non-zero value in only one of the fields under al
 each 'employee' row can have a non-zero value in only one of the fields under all the 'sat-shifts' columns, all other fields under the 'sat-shift' columns for that employee stay at 0.
 each 'employee' row can have a non-zero value in only one of the fields under all the 'sun-shifts' columns, all other fields under the 'sun-shift' columns for that employee stay at 0.
 
-
+in your answer I want you to send me the updated CSV string with the values filled out, based on the instructions above.
+Send only the updated CSV string, without any additional text before or after it.
 `;
 
 const rotaPrompt = {
@@ -112,13 +113,21 @@ const newRotaFromOpenAI = async (req, res) => {
     try {
         console.log(rotaPrompt);
         const rotaSuggestion = await openai.createChatCompletion(rotaPrompt);        
-        const message = await circularJSON.stringify(rotaSuggestion.data.choices[0].message);
+        //const message = await circularJSON.stringify(rotaSuggestion.data.choices[0].message);
+        const message = rotaSuggestion.data.choices[0].message;
         //console.log(rotaSuggestion.data.choices[0].message);
-        console.log(message);
-        res.send(message); 
     }catch(error) {
-        console.log(error)
+        console.log('error from openai:\n' + error)
     }
+    try {
+        const rota = await convert(message);
+    }catch(error) {
+        console.log(`error converting from csvstring to json ${error}`); 
+    }
+        console.log(message);
+        console.log(rota);
+        res.send(JSON.stringify(rota)); 
+    
 };
 
 export default newRotaFromOpenAI;
